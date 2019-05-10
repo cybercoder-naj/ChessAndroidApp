@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Chess</string>
+    <string name="welcome_to_chess">Welcome to Chess!</string>
+    <string name="play">play</string>
+    <string name="exit">exit</string>
+    <string name="player_2">Player 2</string>
+    <string name="undo">undo</string>
+    <string name="player_1">Player 1</string>
+    <string name="check">It\'s a Check!!</string>
+    <string name="promote_question">Which piece do you want to choose?</string>
+    <string name="rook">Rook</string>
+    <string name="bishop">Bishop</string>
+    <string name="knight">Knight</string>
+    <string name="queen">Queen</string>
+</resources>
