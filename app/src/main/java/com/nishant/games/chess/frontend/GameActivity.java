@@ -13,6 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -71,17 +74,20 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume() called");
-        Board.reset();
-        player1.reset();
-        player2.reset();
-        choosePiece = true;
-        hasCastled = false;
-        doublePressed = false;
-        counter = 0;
-        render();
+        if (isDestroyed()) {
+            Board.reset();
+            player1.reset();
+            player2.reset();
+            choosePiece = true;
+            hasCastled = false;
+            doublePressed = false;
+            counter = 0;
+            render();
+        }
     }
 
     private void init() {
+        Log.d(TAG, "init() called");
         buttons[0][0] = findViewById(R.id.btn00);
         buttons[0][1] = findViewById(R.id.btn01);
         buttons[0][2] = findViewById(R.id.btn02);
@@ -153,6 +159,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        Log.d(TAG, "onClick() called with: v = [" + v + "]");
         switch (v.getId()) {
             case R.id.btn00:
                 play(0, 0);
@@ -356,9 +363,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void play(int x, int y) {
+        Log.d(TAG, "play() called with: x = [" + x + "], y = [" + y + "]");
         if (choosePiece) {
             if (!Board.isEmpty(x, y)) {
-                Log.d(TAG, "play: choosing Piece");
                 piece = counter % 2 == 0 ? player1.getPiece(new Point(x, y)) : player2.getPiece(new Point(x, y));
                 if (piece != null) {
                     moves = piece.getMoves();
@@ -380,7 +387,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
             if (moves.contains(new Point(x, y))) {
-                Log.d(TAG, "play: playing piece");
                 undo1.setBackgroundColor(Color.RED);
                 undo2.setBackgroundColor(Color.RED);
                 undo1.setEnabled(false);
@@ -626,14 +632,56 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        if (doublePressed) {
-            super.onBackPressed();
-            return;
+        Log.d(TAG, "onBackPressed() called");
+
+        Toast.makeText(GameActivity.this, "Please click exit icon on action back!", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "onCreateOptionsMenu() called with: menu = [" + menu + "]");
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected() called with: item = [" + item + "]");
+        switch (item.getItemId()) {
+            case R.id.m_restore:
+                AlertDialog.Builder adb = new AlertDialog.Builder(GameActivity.this)
+                        .setCancelable(false)
+                        .setMessage("Do you really want to restart?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            Board.reset();
+                            player1.reset();
+                            player2.reset();
+                            choosePiece = true;
+                            hasCastled = false;
+                            doublePressed = false;
+                            counter = 0;
+                            render();
+                        })
+                        .setNegativeButton("No", (dialog, which) -> dialog.cancel());
+                adb.create().show();
+                break;
+
+            case R.id.m_info:
+                Intent intent = new Intent(GameActivity.this, InfoActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.m_exit:
+                AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this)
+                        .setCancelable(false)
+                        .setMessage("Do you really want to exit?")
+                        .setPositiveButton("Yes", (dialog, which) -> finish())
+                        .setNegativeButton("No", (dialog, which) -> dialog.cancel());
+                builder.create().show();
+                break;
         }
-
-        doublePressed = true;
-        Toast.makeText(GameActivity.this, "Please click BACK again to exit!", Toast.LENGTH_SHORT).show();
-
-        new Handler(Looper.getMainLooper()).postDelayed(() -> doublePressed = false, 2000);
+        return super.onOptionsItemSelected(item);
     }
 }

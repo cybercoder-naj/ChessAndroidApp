@@ -12,4 +12,9 @@
     <string name="bishop">Bishop</string>
     <string name="knight">Knight</string>
     <string name="queen">Queen</string>
+    <string name="restart">Restart</string>
+    <string name="about">About</string>
+    <string name="info">Info</string>
+    <string name="info_message">Designed by Nishant on Android Studio</string>
+    <string name="back">back</string>
 </resources>

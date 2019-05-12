@@ -9,11 +9,11 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
             android:name=".frontend.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,7 +22,8 @@
         </activity>
         <activity
             android:name=".frontend.GameActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.GameActivity">
             <intent-filter>
                 <action android:name=".frontend.GameActivity" />
 
@@ -31,12 +32,21 @@
         </activity>
         <activity
             android:name=".frontend.PopupActivity"
-            android:theme="@style/AppTheme.Popup"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Popup">
             <intent-filter>
                 <action android:name=".frontend.PopupActivity" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".frontend.InfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Popup">
+            <intent-filter>
+                <action android:name=".fronend.InfoActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
     </application>
